@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация пользователя</title>
+    <link rel="stylesheet" href="/static/css/Style.css">
+</head>
+
+<body>
+
+    <div class="login-card">
+        <h2>Регистрация пользователя</h2>
+        {% if error %} <div class="error-message"> {{ error }} </div> {% endif %}
+        <form action="/admin/register" method="post">
+            <div class="input-group">
+                <label for="full_name">ФИО</label>
+                <input type="text" id="full_name" name="full_name" class="text-field" placeholder="Иванов Иван Иванович" required>
+            </div>
+
+            <div class="input-group">
+                <label for="position">Должность</label>
+                <select
+        id="position"
+        name="typeid"
+        class="text-field"
+        required
+    >
+
+        <option value="" disabled selected>
+            Выберите должность
+        </option>
+
+        {% for type in types %}
+            <option value="{{ type.idtype }}">
+                {{ type.type }}
+            </option>
+        {% endfor %}
+
+    </select>
+            </div>
+
+            <div class="input-group">
+                <label for="username">Логин</label>
+                <input type="text" id="username" name="username" class="text-field" placeholder="Придумайте логин" required>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" class="text-field" placeholder="Придумайте пароль" required>
+            </div>
+
+            <div class="action-group">
+                <button type="submit" class="btn-login">Создать пользователя</button>
+                <a href="{{ url_for('index_page') }}" class="back-link">← Вернуться назад</a>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>

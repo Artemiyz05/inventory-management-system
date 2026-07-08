@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запчасти на складе</title>
+
+    <link rel="stylesheet" href="/static/css/Head.css">
+    <link rel="stylesheet" href="/static/css/Table.css">
+</head>
+
+<body>
+
+    <div id="conteiner">
+
+        <div id="left_bar">
+            <a href="{{ url_for('index_page') }}">
+                <img class="bear" src="/static/images/bear.png" alt="bear">
+            </a>
+        </div>
+
+        <div id="top">
+            <nav id="nav">
+                <ul class="nav-list">
+                    <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('supplier_page') }}'">
+                                Поставщик
+                        </button>
+                    </li>
+                    <li><button class="button" type="button">История цен</button></li>
+                    <li><button class="button" type="button">Учёт расходов</button></li>
+                    <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('parts_in_stock_page') }}'">
+                                Запчасти на складе
+                        </button>
+                    </li>
+                    
+                    <li>
+                        <button class="button" type="button"
+                             onclick="window.location.href='{{ url_for('register_page') }}'">
+                                Зарегистрировать пользователя
+                        </button>
+                    </li>
+
+                    <li class="user-item">
+                        <a href="{{ url_for('profile_page') }}">
+                            <img class="user" src="/static/images/User.png" alt="user">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="main">
+
+    <div class="content">
+
+        <h2>Запчасти на складе</h2>
+
+        <div class="search-panel">
+            <input
+                type="text"
+                id="search"
+                class="text-field"
+                placeholder="Поиск по названию, артикулу...">
+
+            <button class="button">Поиск</button>
+        </div>
+
+        <div class="table-container">
+            <table class="parts-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Артикул</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+<tr>
+                            <td>1</td>
+                            <td>Подшипник</td>
+                            <td>AB-245</td>
+                            <td>15</td>
+                            <td>850 ₽</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>Фильтр масляный</td>
+                            <td>OF-123</td>
+                            <td>32</td>
+                            <td>430 ₽</td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>Ремень ГРМ</td>
+                            <td>GRM-888</td>
+                            <td>7</td>
+                            <td>2300 ₽</td>
+                        </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+        <div id="footer">
+            <span class="adres">ПН-ПТ: 9:00 - 18:00</span>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

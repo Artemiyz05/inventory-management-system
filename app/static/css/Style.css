@@ -1,0 +1,161 @@
+/* Общие стили для центрирования карточки на экране */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #d7d7d7;
+    /* Такой же фон, как у вашего #main */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* Растягивает на всю высоту экрана */
+}
+
+/* Карточка формы авторизации */
+.login-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 360px;
+    /* Компактная ширина для формы входа */
+    box-sizing: border-box;
+}
+
+/* Заголовок "Вход" */
+.login-card h2 {
+    margin: 0 0 24px 0;
+    color: #333;
+    text-align: center;
+    font-size: 24px;
+}
+
+/* Группа для каждого поля (текст + инпут) */
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    /* Текст будет СВЕРХУ над полем — так красивее для входа */
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* Ваши фирменные стили для полей ввода */
+.text-field {
+    height: 40px;
+    /* Чуть увеличил для удобства клика на смартфонах */
+    padding: 0 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.text-field:focus {
+    border-color: #65000b;
+    box-shadow: 0 0 8px rgba(101, 0, 11, 0.3);
+}
+
+/* Контейнер для кнопок и ссылок внизу */
+.action-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+/* Ваша фирменная кнопка "Войти" */
+.btn-login {
+    width: 100%;
+    /* На всю ширину карточки */
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #65000b;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(101, 0, 11, 0.2);
+    transition: all 0.2s;
+}
+
+.btn-login:hover {
+    background-color: #4a1116;
+    box-shadow: 0 6px 12px rgba(74, 17, 22, 0.3);
+}
+
+.btn-login:active {
+    transform: scale(0.98);
+}
+
+/* Кнопка/ссылка "Забыл пароль?" */
+.forgot-password {
+    font-size: 13px;
+    color: #666;
+    text-decoration: none;
+    /* Убираем подчеркивание */
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.forgot-password:hover {
+    color: #65000b;
+    /* При наведении окрасится в ваш бордовый */
+    text-decoration: underline;
+    /* Появится подчеркивание */
+}
+
+
+
+select.text-field {
+    appearance: none;
+    /* Убираем стандартную стрелку браузера */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2365000b%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 30px;
+    /* Чтобы текст не налезал на стрелочку */
+    cursor: pointer;
+}
+
+
+.back-link {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+    color: #65000b;
+}
+
+.error-message {
+    background-color: #ffebeb;
+    color: #920314;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+}

@@ -1,0 +1,234 @@
+/* Обнуляем системные отступы */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+/* ГЛАВНЫЙ КОНТЕЙНЕР: 
+  Делаем его на CSS Grid. Он автоматически занимает 100% ширины экрана.
+*/
+#conteiner {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  /* Левая колонка фиксированная, правая забирает всё остальное пространство */
+  grid-template-rows: auto 1fr auto;
+  /* Верх и низ по размеру контента, центр (main) растягивается */
+  min-height: 100vh;
+  /* Растягиваем контейнер на всю высоту экрана */
+}
+
+/* Левая панель (теперь она изящно стоит на своем месте без всяких float) */
+#left_bar {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  /* Занимает пространство от самого верха до начала футера */
+  background: #d7d7d7;
+  border-right: 1px solid #65000b;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+
+.bear {
+  width: 100px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.user {
+  width: 100px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.user-item {
+  margin-left: auto;
+}
+
+/* Верхняя панель */
+#top {
+  grid-column: 2;
+  grid-row: 1;
+  background: #d7d7d7;
+  border-bottom: 1px solid #65000b;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+}
+
+#nav {
+  flex-grow: 1;
+  /* Это заставит навигацию занять всё свободное место */
+}
+
+/* Навигация на Flexbox — кнопки красиво встают в ряд и переносятся, если экран слишком узкий */
+#nav ul {
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Элегантный отступ между элементами вместо маржинов */
+  flex-wrap: wrap;
+}
+
+.buttons-group {
+  grid-column: 2;
+  display: flex;
+  justify-content: space-between;
+  /* Разносит кнопки по левому и правому краю */
+  align-items: center;
+  margin-top: 10px;
+  /* Дополнительный отступ сверху от полей */
+}
+
+.button {
+  /* Позиционирование в нашей Grid-сетке */
+  grid-column: 2;
+  /* Отправляем кнопку во вторую колонку (под поля) */
+  justify-self: end;
+  /* Прижимаем к правому краю полей ввода (выглядит аккуратно) */
+
+  /* Размеры и отступы */
+  padding: 10px 25px;
+  min-width: 140px;
+  /* Чтобы кнопка не была слишком маленькой */
+  font-family: sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+
+  /* Цвета под стать вашему фокусу */
+  color: #ffffff;
+  background-color: #65000b;
+  /* Ваш фирменный бордовый */
+
+  /* Оформление */
+  border: none;
+  border-radius: 6px;
+  /* Скругление чуть меньше, чем у полей, для строгости */
+  cursor: pointer;
+  /* Курсор-палец при наведении */
+  box-shadow: 0 4px 6px rgba(101, 0, 11, 0.2);
+  /* Легкая бордовая тень */
+
+  /* Плавные переходы для анимации */
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+/* Эффект при наведении мыши (Hover) */
+.button:hover {
+  background-color: #4a1116;
+  /* Становится чуть темнее и глубже */
+  box-shadow: 0 6px 12px rgba(74, 17, 22, 0.3);
+  /* Тень становится объемнее */
+}
+
+/* Эффект при самом клике (Active) */
+.button:active {
+  transform: scale(0.98);
+  /* Кнопка слегка вдавливается при нажатии */
+  box-shadow: 0 2px 4px rgba(74, 17, 22, 0.2);
+}
+
+.save-db {
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.save-db:hover {
+  color: #f00;
+}
+
+/* Главная область (автоматически масштабируется под размеры окна) */
+#main {
+  grid-column: 2;
+  grid-row: 2;
+
+  background: #d7d7d7;
+  padding: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Контейнер для формы */
+.form-container {
+  display: grid;
+  /* 80px подпись (хватит для "Пароль:"), 470px — под ваше поле */
+  grid-template-columns: 80px 470px;
+  gap: 20px 15px;
+  /* Отступы: 20px между строками, 15px между текстом и полем */
+  align-items: center;
+  /* Центрируем текст по вертикали относительно поля */
+}
+
+/* Стили для подписей (ФИО, Логин, Пароль) */
+.form-container label {
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  text-align: right;
+  /* Прижимает текст к двоеточию справа */
+}
+
+/* Стили для поля записи (ваш код с небольшими правками под input) */
+.text-field {
+  width: 100%;
+  /* Займет все выделенные ей 470px */
+  height: 35px;
+  padding: 0 10px;
+  /* Убрали верхний padding, чтобы текст в input не уезжал вниз */
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  /* Чтобы padding не увеличивал высоту поля */
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  /* resize: vertical; убрали, так как для input (строковых полей) она не применяется */
+}
+
+/* Эффект при клике на поле (ваш код) */
+.text-field:focus {
+  border-color: #65000b;
+  box-shadow: 0 0 8px rgba(101, 0, 11, 0.4);
+  /* Чуть-чуть сгладил прозрачность тени */
+}
+
+.welcome-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Подвал сайта */
+#footer {
+  grid-column: 1 / 3;
+  /* Растягивается на всю ширину (обе колонки) */
+  grid-row: 3;
+  background: #d7d7d7;
+  border-top: 1px solid #65000b;
+  padding: 15px 20px;
+}
+
+.adres {
+  font-size: 14px;
+}

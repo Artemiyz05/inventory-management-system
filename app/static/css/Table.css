@@ -1,0 +1,76 @@
+/* Содержимое main */
+#main {
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+#main h2 {
+    margin: 0 0 20px;
+    color: #65000b;
+}
+
+/* Поиск */
+.search-panel {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+
+    margin-bottom: 40px;
+}
+
+.search-panel .text-field {
+    flex: 1;
+}
+
+/* Таблица */
+.table-container {
+    margin-top: 30px;
+
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .1);
+}
+
+.parts-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.parts-table thead {
+    background: #65000b;
+    color: white;
+}
+
+.parts-table th,
+.parts-table td {
+    padding: 14px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.parts-table tbody tr:nth-child(even) {
+    background: #f5f5f5;
+}
+
+.parts-table tbody tr:hover {
+    background: #ececec;
+}
+
+/* Используем ваши стили поля ввода */
+.text-field {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+}
+
+.text-field:focus {
+    border-color: #65000b;
+    box-shadow: 0 0 8px rgba(101, 0, 11, .3);
+}
+
+/* Кнопка использует уже существующий класс .button */

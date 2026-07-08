@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поставщик</title>
+
+    <link rel="stylesheet" href="/static/css/Head.css">
+    <link rel="stylesheet" href="/static/css/Table.css">
+</head>
+
+<body>
+
+    <div id="conteiner">
+
+        <div id="left_bar">
+            <a href="{{ url_for('index_page') }}">
+                <img class="bear" src="/static/images/bear.png" alt="bear">
+            </a>
+        </div>
+
+        <div id="top">
+            <nav id="nav">
+                <ul class="nav-list">
+                     <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('supplier_page') }}'">
+                                Поставщик
+                        </button>
+                    </li>
+                    <li><button class="button" type="button">История цен</button></li>
+                    <li><button class="button" type="button">Учёт расходов</button></li>
+                    <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('parts_in_stock_page') }}'">
+                                Запчасти на складе
+                        </button>
+                    </li>
+                    
+                    <li>
+                        <button class="button" type="button"
+                             onclick="window.location.href='{{ url_for('register_page') }}'">
+                                Зарегистрировать пользователя
+                        </button>
+                    </li>
+
+                    <li class="user-item">
+                        <a href="{{ url_for('profile_page') }}">
+                            <img class="user" src="/static/images/User.png" alt="user">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="main">
+
+    <div class="content">
+
+        <div class="header-row">
+
+            <h2>Поставщики</h2>
+
+            <div class="search-panel">
+                <input
+                    type="text"
+                    class="text-field"
+                    placeholder="Поиск по названию, телефону...">
+
+                <button class="button">Поиск</button>
+            </div>
+
+        </div>
+
+        <div class="table-container">
+
+            <table class="parts-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Контактное лицо</th>
+                        <th>Телефон</th>
+                        <th>E-mail</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>1</td>
+                        <td>ООО «АвтоДеталь»</td>
+                        <td>Иванов И.И.</td>
+                        <td>+7 (900) 111-22-33</td>
+                        <td>info@autodetal.ru</td>
+                    </tr>
+
+                    <tr>
+                        <td>2</td>
+                        <td>ООО «МоторСнаб»</td>
+                        <td>Петров П.П.</td>
+                        <td>+7 (901) 222-33-44</td>
+                        <td>sale@motorsnab.ru</td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>ООО «АвтоПлюс»</td>
+                        <td>Сидоров С.С.</td>
+                        <td>+7 (902) 333-44-55</td>
+                        <td>office@autoplus.ru</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+        <div id="footer">
+            <span class="adres">ПН-ПТ: 9:00 - 18:00</span>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

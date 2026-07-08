@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Современная адаптивная верстка</title>
+    <link rel="stylesheet" href="/static/css/Head.css" type="text/css" />
+</head>
+
+<body>
+
+    <div id="conteiner">
+        <div id="left_bar">
+            <a href="{{ url_for('index_page') }}">
+                <img class="bear" src="/static/images/bear.png" alt="bear" />
+            </a>
+        </div>
+
+        <div id="top">
+            <nav id="nav">
+                <ul class="nav-list">
+                     <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('supplier_page') }}'">
+                                Поставщик
+                        </button>
+                    </li>
+                    <li><button class="button" type="button">История цен</button></li>
+                    <li><button class="button" type="button">Учёт расходов</button></li>
+                    <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('parts_in_stock_page') }}'">
+                                Запчасти на складе
+                        </button>
+                    </li>
+                    
+                    <li>
+                        <button class="button" type="button"
+                             onclick="window.location.href='{{ url_for('register_page') }}'">
+                                Зарегистрировать пользователя
+                        </button>
+                    </li>
+                    <li class="user-item">
+                        <a href="{{ url_for('profile_page') }}">
+                            <img class="user" src="/static/images/User.png" alt="user">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="main">
+            <form class="form-container" action="/admin/profile" method="post">
+                {% if error %} <div class="error-message"> {{ error }} </div> {% endif %}
+                <label for="full_name">ФИО:</label>
+                <input type="text" id="full_name" name="full_name" class="text-field" value="{{ user.full_name }}" placeholder="Иванов Иван Иванович">
+
+                <label for="login">Логин:</label>
+                <input type="text" id="login" name="login" class="text-field" value="{{ user.login }}" readonly placeholder="Введите логин">
+
+                <label for="email">Почта:</label>
+                <input type="email" id="email" name="email" class="text-field" value="{{ user.email or '' }}" placeholder="Введите почту">
+
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" name="password" class="text-field" placeholder="Введите пароль">
+
+                <div class="buttons-group">
+                    <a class="button" href="{{ url_for('logout') }}">
+                        Выйти из аккаунта
+                    </a>
+                    <button class="button" type="submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="footer">
+            <span class="adres">ПН-ПТ: 9:00 - 18:00</span>
+        </div>
+    </div>
+
+</body>
+
+</html>
