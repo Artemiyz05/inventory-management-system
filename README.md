@@ -41,8 +41,10 @@
 <img width="828" height="604" alt="image" src="https://github.com/user-attachments/assets/84246cac-0810-4257-b2ce-8278ad315ed8" />
 
 # 📸 Интерфейс
-<img width="2515" height="1171" alt="image" src="https://github.com/user-attachments/assets/3cf6a9ef-bc04-4dc1-9250-ca3cd0459ae9" />
-<img width="2510" height="1222" alt="image" src="https://github.com/user-attachments/assets/3419fdae-db7a-4f6c-849f-6d9acc66ef0e" />
+<img width="2518" height="1177" alt="image" src="https://github.com/user-attachments/assets/e1e5cb50-701f-4e3a-bf6c-a8fa56c7f59d" />
+<img width="2514" height="1171" alt="image" src="https://github.com/user-attachments/assets/692b968c-7c95-47ba-941b-a0bb6198602e" />
+![Uploading image.png…]()
+
 <img width="2515" height="1217" alt="image" src="https://github.com/user-attachments/assets/e14f540f-f74d-450e-8c15-2f26c2ff764b" />
 <img width="2521" height="1217" alt="image" src="https://github.com/user-attachments/assets/d3f199d8-741b-49ff-8f52-38d1a04c3e2c" />
 <img width="2515" height="1214" alt="image" src="https://github.com/user-attachments/assets/018e85e2-9745-427d-a78f-c53bc4b1c198" />
