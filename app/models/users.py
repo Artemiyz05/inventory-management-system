@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import ForeignKey
 from app.database import Model
 
 
@@ -11,5 +12,5 @@ class User(Model):
     full_name: Mapped[str]
     login: Mapped[str] = mapped_column(unique=True)
     password_hash: Mapped[str]
-    typeid: Mapped[int]
-    email: Mapped[str | None] = mapped_column(nullable=True, default=None)
+    type_id: Mapped[int] = mapped_column(ForeignKey("types.idtype"))
+    email: Mapped[str | None] = mapped_column(unique=True, nullable=True, default=None)

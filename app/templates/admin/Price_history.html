@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История цен</title>
+
+    <link rel="stylesheet" href="/static/css/Head.css">
+    <link rel="stylesheet" href="/static/css/Table.css">
+</head>
+
+<body>
+
+    <div id="conteiner">
+
+        <div id="left_bar">
+            <a href="{{ url_for('index_page') }}">
+                <img class="bear" src="/static/images/bear.png" alt="bear">
+            </a>
+        </div>
+
+        <div id="top">
+            <nav id="nav">
+                <ul class="nav-list">
+                    <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('supplier_page') }}'">
+                            Поставщик
+                        </button>
+                    </li>
+
+                    <li><button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('price_history_page') }}'">История цен
+                        </button>
+                    </li>
+
+                    <li><button class="button" type="button">Учёт расходов</button></li>
+
+                    <li>
+                        <button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('parts_in_stock_page') }}'">
+                            Запчасти на складе
+                        </button>
+                    </li>
+
+                    <li>
+                        <button class="button" type="button"
+                             onclick="window.location.href='{{ url_for('register_page') }}'">
+                            Зарегистрировать пользователя
+                        </button>
+                    </li>
+
+                    <li class="user-item">
+                        <a href="{{ url_for('profile_page') }}">
+                            <img class="user" src="/static/images/User.png" alt="user">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="main">
+            <div class="content">
+
+                <div class="header-row">
+                    <h2>История цен</h2>
+
+                    <form class="search-panel" method="get">
+                        <input
+                            type="text"
+                            name="search"
+                            class="text-field"
+                            placeholder="Поиск по названию или артикулу..."
+                            value="{{ search or '' }}">
+
+                        <button class="button" type="submit">Поиск</button>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <table class="parts-table">
+                        <thead>
+                            <tr>
+                                <th>Запчасть</th>
+                                <th>Артикул</th>
+                                <th>Тип цены</th>
+                                <th>Цена</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        {% if prices %}
+                            {% for row in prices %}
+                            <tr>
+                                <td>{{ row.name }}</td>
+                                <td>{{ row.article }}</td>
+                                <td>{{ row.price_type }}</td>
+                                <td>{{ row.price }}</td>
+                                <td>
+                                    {% if row.price_date %}
+                                        {{ row.price_date }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5">Цены не найдены.</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="footer">
+            <span class="adres">ПН-ПТ: 9:00 - 18:00</span>
+        </div>
+
+    </div>
+
+</body>
+</html>

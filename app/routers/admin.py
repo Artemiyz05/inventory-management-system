@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends, Form
+from fastapi import APIRouter, Request, Depends, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 
@@ -6,7 +6,8 @@ from starlette.status import HTTP_303_SEE_OTHER
 
 from typing import Annotated
 
-from sqlalchemy import select
+from sqlalchemy import select, or_, func, union_all, literal, Integer, Date
+from sqlalchemy.orm import aliased
 
 from app.dependencies.auth import check_auth
 
@@ -14,6 +15,13 @@ from app.database import SessionDep
 
 from app.models.types import Type
 from app.models.users import User
+from app.models.suppliers import Supplier
+from app.models.details import Detail
+from app.models.supplies import Supply
+from app.models.future_prices import Future_price
+from app.models.history_prices import History_price
+from app.schemas.users import SupplierUpdate
+from app.schemas.detail import DetailUpdate
 
 from app.core.security import hash_password
 
@@ -120,7 +128,7 @@ async def create_user(
     session: SessionDep,
     full_name: Annotated[str, Form()],
     username: Annotated[str, Form()],
-    typeid: Annotated[int, Form()],
+    type_id: Annotated[int, Form()],
     password: Annotated[str, Form()],
 ):
     types = await get_types(session)
@@ -157,7 +165,7 @@ async def create_user(
         full_name=full_name,
         login=username,
         password_hash=hashed_password,
-        typeid=typeid,
+        type_id=type_id,
     )
 
     session.add(user)
@@ -168,23 +176,205 @@ async def create_user(
 
 @router.get("/parts_in_stock", name="parts_in_stock_page")
 async def open_parts_in_stock(
-    request: Request, session: SessionDep, username: str = Depends(check_auth)
+    request: Request,
+    session: SessionDep,
+    username: str = Depends(check_auth),
+    search: str | None = None,
 ):
+    stmt = select(
+        Detail.iddetails,
+        Detail.name,
+        Detail.article,
+        Detail.price,
+        func.sum(Supply.quantity).label("quantity"),
+    ).join(Supply, Supply.detail_id == Detail.iddetails)
+
+    if search:
+        stmt = stmt.where(
+            or_(
+                Detail.name.ilike(f"%{search}%"),
+                Detail.article.ilike(f"%{search}%"),
+            )
+        )
+
+    stmt = stmt.group_by(
+        Detail.iddetails,
+        Detail.name,
+        Detail.article,
+        Detail.price,
+    )
+    result = await session.execute(stmt)
+    details = result.all()
     return templates.TemplateResponse(
         "admin/Parts_in_stock.html",
         {
             "request": request,
+            "details": details,
+            "search": search,
         },
     )
 
 
+@router.put("/parts_in_stock/{detail_id}")
+async def update_detail(
+    detail_id: int,
+    data: DetailUpdate,
+    session: SessionDep,
+    username: str = Depends(check_auth),
+):
+    detail = await session.get(Detail, detail_id)
+
+    if detail is None:
+        raise HTTPException(status_code=404, detail="Деталь не найдена")
+
+    exists = await session.scalar(
+        select(Detail.iddetails).where(
+            Detail.article == data.article,
+            Detail.iddetails != detail_id,
+        )
+    )
+    if exists:
+        raise HTTPException(status_code=400, detail="Артикул уже существует")
+
+    detail.name = data.name
+    detail.article = data.article
+    detail.price = data.price
+    detail.note = data.note
+
+    await session.commit()
+    await session.refresh(detail)
+
+    return {"message": "OK"}
+
+
 @router.get("/supplier", name="supplier_page")
 async def open_supplier(
-    request: Request, session: SessionDep, username: str = Depends(check_auth)
+    request: Request,
+    session: SessionDep,
+    username: str = Depends(check_auth),
+    search: str | None = None,
 ):
+    stmt = select(Supplier)
+
+    if search:
+        stmt = stmt.where(
+            or_(
+                Supplier.business_name.ilike(f"%{search}%"),
+                Supplier.contact_person.ilike(f"%{search}%"),
+                Supplier.phone.ilike(f"%{search}%"),
+            )
+        )
+
+    result = await session.execute(stmt)
+    suppliers = result.scalars().all()
     return templates.TemplateResponse(
         "admin/Supplier.html",
         {
             "request": request,
+            "suppliers": suppliers,
+            "search": search,
+        },
+    )
+
+
+@router.put("/supplier/{supplier_id}")
+async def update_supplier(
+    supplier_id: int,
+    data: SupplierUpdate,
+    session: SessionDep,
+    username: str = Depends(check_auth),
+):
+    supplier = await session.get(Supplier, supplier_id)
+
+    if supplier is None:
+        raise HTTPException(status_code=404, detail="Поставщик не найден")
+
+    supplier.business_name = data.business_name
+    supplier.contact_person = data.contact_person
+    supplier.phone = data.phone
+
+    await session.commit()
+    await session.refresh(supplier)
+
+    return {"message": "OK"}
+
+
+@router.get("/price_history", name="price_history_page")
+async def open_price_history(
+    request: Request,
+    session: SessionDep,
+    username: str = Depends(check_auth),
+    search: str | None = None,
+):
+    search_filter = None
+    if search:
+        search_filter = or_(
+            Detail.name.ilike(f"%{search}%"),
+            Detail.article.ilike(f"%{search}%"),
+        )
+
+    current_stmt = select(
+        Detail.iddetails.label("detail_id"),
+        Detail.name.label("name"),
+        Detail.article.label("article"),
+        Detail.price.label("price"),
+        literal("Текущая").label("price_type"),
+        literal(None, type_=Date).label("price_date"),
+        literal(0, type_=Integer).label("sort_group"),
+    )
+
+    history_stmt = select(
+        Detail.iddetails.label("detail_id"),
+        Detail.name.label("name"),
+        Detail.article.label("article"),
+        History_price.price.label("price"),
+        literal("Прошлая").label("price_type"),
+        History_price.date.label("price_date"),
+        literal(1, type_=Integer).label("sort_group"),
+    ).join(
+        History_price,
+        History_price.detail_id == Detail.iddetails,
+    )
+
+    future_stmt = select(
+        Detail.iddetails.label("detail_id"),
+        Detail.name.label("name"),
+        Detail.article.label("article"),
+        Future_price.price.label("price"),
+        literal("Будущая").label("price_type"),
+        Future_price.date.label("price_date"),
+        literal(2, type_=Integer).label("sort_group"),
+    ).join(
+        Future_price,
+        Future_price.detail_id == Detail.iddetails,
+    )
+
+    if search_filter is not None:
+        current_stmt = current_stmt.where(search_filter)
+        history_stmt = history_stmt.where(search_filter)
+        future_stmt = future_stmt.where(search_filter)
+
+    prices_union = union_all(
+        current_stmt,
+        history_stmt,
+        future_stmt,
+    ).subquery()
+
+    stmt = select(prices_union).order_by(
+        prices_union.c.name,
+        prices_union.c.article,
+        prices_union.c.sort_group,
+        prices_union.c.price_date.desc().nullslast(),
+    )
+
+    result = await session.execute(stmt)
+    prices = result.all()
+
+    return templates.TemplateResponse(
+        "admin/Price_history.html",
+        {
+            "request": request,
+            "prices": prices,
+            "search": search,
         },
     )

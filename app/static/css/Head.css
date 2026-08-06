@@ -232,3 +232,80 @@ body {
 .adres {
   font-size: 14px;
 }
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  justify-content: center;
+  align-items: center;
+
+  z-index: 1000;
+}
+
+.modal-content {
+  width: 100%;
+  max-width: 500px;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  padding: 30px;
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .15);
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  position: relative;
+}
+
+.modal-content h2 {
+  margin: 0;
+  text-align: center;
+  color: #65000b;
+}
+
+/* Каждое поле */
+.modal-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal-group label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Использует ваш класс .text-field */
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+
+  font-size: 28px;
+  color: #777;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.close:hover {
+  color: #65000b;
+}

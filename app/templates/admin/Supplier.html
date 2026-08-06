@@ -29,7 +29,9 @@
                                 Поставщик
                         </button>
                     </li>
-                    <li><button class="button" type="button">История цен</button></li>
+                    <li><button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('price_history_page') }}'">История цен
+                        </button>
                     <li><button class="button" type="button">Учёт расходов</button></li>
                     <li>
                         <button class="button" type="button"
@@ -62,14 +64,20 @@
 
             <h2>Поставщики</h2>
 
-            <div class="search-panel">
-                <input
-                    type="text"
-                    class="text-field"
-                    placeholder="Поиск по названию, телефону...">
+            <form class="search-panel" method="get">
 
-                <button class="button">Поиск</button>
-            </div>
+    <input
+        type="text"
+        name="search"
+        class="text-field"
+        placeholder="Поиск по названию, телефону..."
+        value="{{ search or '' }}">
+
+    <button class="button" type="submit">
+        Поиск
+    </button>
+
+</form>
 
         </div>
 
@@ -77,43 +85,44 @@
 
             <table class="parts-table">
 
-                <thead>
+                 <thead>
                     <tr>
-                        <th>ID</th>
+                       <th>ID</th>
                         <th>Название</th>
                         <th>Контактное лицо</th>
                         <th>Телефон</th>
-                        <th>E-mail</th>
+                         <th>Редактировать</th>
                     </tr>
                 </thead>
 
                 <tbody>
+{% if suppliers %}
+    {% for supplier in suppliers %}
+    <tr>
+        <td>{{ supplier.idsuppliers }}</td>
+        <td>{{ supplier.business_name }}</td>
+        <td>{{ supplier.contact_person }}</td>
+        <td>{{ supplier.phone }}</td>
 
-                    <tr>
-                        <td>1</td>
-                        <td>ООО «АвтоДеталь»</td>
-                        <td>Иванов И.И.</td>
-                        <td>+7 (900) 111-22-33</td>
-                        <td>info@autodetal.ru</td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>ООО «МоторСнаб»</td>
-                        <td>Петров П.П.</td>
-                        <td>+7 (901) 222-33-44</td>
-                        <td>sale@motorsnab.ru</td>
-                    </tr>
-
-                    <tr>
-                        <td>3</td>
-                        <td>ООО «АвтоПлюс»</td>
-                        <td>Сидоров С.С.</td>
-                        <td>+7 (902) 333-44-55</td>
-                        <td>office@autoplus.ru</td>
-                    </tr>
-
-                </tbody>
+        <td>
+            <button
+    class="button edit-btn"
+    data-id="{{ supplier.idsuppliers }}"
+    data-business_name="{{ supplier.business_name }}"
+    data-contact_person="{{ supplier.contact_person }}"
+    data-phone="{{ supplier.phone }}"
+>
+    Редактировать
+</button>
+        </td>
+    </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="5">Поставщики отсутствуют.</td>
+    </tr>
+{% endif %}
+</tbody>
 
             </table>
 
@@ -131,6 +140,119 @@
 
     </div>
 
+<div id="editModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close">&times;</span>
+
+        <h2>Редактирование поставщика</h2>
+
+        <input type="hidden" id="supplier-id">
+
+        <div class="modal-group">
+            <label>Название организации</label>
+            <input
+                type="text"
+                id="business-name"
+                class="text-field">
+        </div>
+
+        <div class="modal-group">
+            <label>Контактное лицо</label>
+            <input
+                type="text"
+                id="contact-person"
+                class="text-field">
+        </div>
+
+        <div class="modal-group">
+            <label>Телефон</label>
+            <input
+                type="text"
+                id="phone"
+                class="text-field">
+        </div>
+
+        <div class="modal-actions">
+            <button class="button" id="saveBtn">
+                Сохранить
+            </button>
+        </div>
+
+    </div>
+
+</div>
+<script>
+const modal = document.getElementById("editModal");
+const closeBtn = document.querySelector(".close");
+
+document.querySelectorAll(".edit-btn").forEach(button => {
+
+    button.addEventListener("click", function () {
+
+        document.getElementById("supplier-id").value =
+            this.dataset.id;
+
+        document.getElementById("business-name").value =
+            this.dataset.business_name;
+
+        document.getElementById("contact-person").value =
+            this.dataset.contact_person;
+
+        document.getElementById("phone").value =
+            this.dataset.phone;
+
+        modal.style.display = "flex";
+    });
+
+});
+
+closeBtn.onclick = () => {
+    modal.style.display = "none";
+};
+
+window.onclick = (event) => {
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};
+
+document.getElementById("saveBtn").onclick = () => {
+
+    const supplier = {
+        id: document.getElementById("supplier-id").value,
+        business_name: document.getElementById("business-name").value,
+        contact_person: document.getElementById("contact-person").value,
+        phone: document.getElementById("phone").value
+    };
+
+   fetch(`/admin/supplier/${supplier.id}`, {
+    method: "PUT",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        business_name: supplier.business_name,
+        contact_person: supplier.contact_person,
+        phone: supplier.phone
+    })
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error("Ошибка при сохранении");
+    }
+
+    location.reload();
+})
+.catch(error => {
+    alert(error.message);
+});
+
+    modal.style.display = "none";
+};
+
+</script>
 </body>
 
 </html>

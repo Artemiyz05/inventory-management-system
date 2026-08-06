@@ -7,6 +7,11 @@ from app.routers.admin import router as admin_router
 
 from app.models.types import Type
 from app.models.users import User
+from app.models.details import Detail
+from app.models.future_prices import Future_price
+from app.models.history_prices import History_price
+from app.models.suppliers import Supplier
+from app.models.supplies import Supply
 
 from contextlib import asynccontextmanager
 from app.database import engine, Model

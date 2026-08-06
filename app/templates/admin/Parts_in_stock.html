@@ -26,22 +26,26 @@
                     <li>
                         <button class="button" type="button"
                             onclick="window.location.href='{{ url_for('supplier_page') }}'">
-                                Поставщик
+                            Поставщик
                         </button>
                     </li>
-                    <li><button class="button" type="button">История цен</button></li>
+
+                   <li><button class="button" type="button"
+                            onclick="window.location.href='{{ url_for('price_history_page') }}'">История цен
+                        </button>
                     <li><button class="button" type="button">Учёт расходов</button></li>
+
                     <li>
                         <button class="button" type="button"
                             onclick="window.location.href='{{ url_for('parts_in_stock_page') }}'">
-                                Запчасти на складе
+                            Запчасти на складе
                         </button>
                     </li>
-                    
+
                     <li>
                         <button class="button" type="button"
-                             onclick="window.location.href='{{ url_for('register_page') }}'">
-                                Зарегистрировать пользователя
+                            onclick="window.location.href='{{ url_for('register_page') }}'">
+                            Зарегистрировать пользователя
                         </button>
                     </li>
 
@@ -55,66 +59,69 @@
         </div>
 
         <div id="main">
+            <div class="content">
 
-    <div class="content">
+                <div class="header-row">
+                    <h2>Запчасти на складе</h2>
 
-        <h2>Запчасти на складе</h2>
+                    <form class="search-panel" method="get">
+                        <input
+                            type="text"
+                            name="search"
+                            class="text-field"
+                            placeholder="Поиск по названию, артикулу..."
+                            value="{{ search or '' }}">
 
-        <div class="search-panel">
-            <input
-                type="text"
-                id="search"
-                class="text-field"
-                placeholder="Поиск по названию, артикулу...">
+                        <button class="button" type="submit">Поиск</button>
+                    </form>
+                </div>
 
-            <button class="button">Поиск</button>
+                <div class="table-container">
+                    <table class="parts-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Артикул</th>
+                                <th>Количество</th>
+                                <th>Цена</th>
+                                <th>Редактировать</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        {% if details %}
+                            {% for detail in details %}
+                            <tr>
+                                <td>{{ detail.iddetails }}</td>
+                                <td>{{ detail.name }}</td>
+                                <td>{{ detail.article }}</td>
+                                <td>{{ detail.quantity }}</td>
+                                <td>{{ detail.price }}</td>
+                                <td>
+                                    <button
+                                        class="button edit-btn"
+                                        data-id="{{ detail.iddetails }}"
+                                        data-name="{{ detail.name }}"
+                                        data-article="{{ detail.article }}"
+                                        data-price="{{ detail.price }}"
+                                    >
+                                        Редактировать
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="6">Детали отсутствуют.</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
         </div>
-
-        <div class="table-container">
-            <table class="parts-table">
-
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Название</th>
-                        <th>Артикул</th>
-                        <th>Количество</th>
-                        <th>Цена</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-<tr>
-                            <td>1</td>
-                            <td>Подшипник</td>
-                            <td>AB-245</td>
-                            <td>15</td>
-                            <td>850 ₽</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>Фильтр масляный</td>
-                            <td>OF-123</td>
-                            <td>32</td>
-                            <td>430 ₽</td>
-                        </tr>
-
-                        <tr>
-                            <td>3</td>
-                            <td>Ремень ГРМ</td>
-                            <td>GRM-888</td>
-                            <td>7</td>
-                            <td>2300 ₽</td>
-                        </tr>
-                </tbody>
-
-            </table>
-        </div>
-
-    </div>
-
-</div>
 
         <div id="footer">
             <span class="adres">ПН-ПТ: 9:00 - 18:00</span>
@@ -122,6 +129,89 @@
 
     </div>
 
-</body>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
 
+            <h2>Редактирование запчасти</h2>
+
+            <input type="hidden" id="part-id">
+
+            <div class="modal-group">
+                <label>Название</label>
+                <input type="text" id="part-name" class="text-field">
+            </div>
+
+            <div class="modal-group">
+                <label>Артикул</label>
+                <input type="text" id="part-article" class="text-field">
+            </div>
+
+        
+
+            <div class="modal-group">
+                <label>Цена</label>
+                <input type="number" id="part-price" class="text-field" min="0" step="0.01">
+            </div>
+
+            <div class="modal-actions">
+                <button class="button" id="saveBtn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const modal = document.getElementById("editModal");
+    const closeBtn = document.querySelector(".close");
+
+    document.querySelectorAll(".edit-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            document.getElementById("part-id").value = this.dataset.id;
+            document.getElementById("part-name").value = this.dataset.name;
+            document.getElementById("part-article").value = this.dataset.article;
+            document.getElementById("part-price").value = this.dataset.price;
+
+            modal.style.display = "flex";
+        });
+    });
+
+    closeBtn.onclick = () => {
+        modal.style.display = "none";
+    };
+
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    document.getElementById("saveBtn").onclick = () => {
+        const detailId = document.getElementById("part-id").value;
+
+        fetch(`/admin/parts_in_stock/${detailId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: document.getElementById("part-name").value,
+                article: document.getElementById("part-article").value,
+                price: Number(document.getElementById("part-price").value)
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Ошибка при сохранении");
+            }
+            location.reload();
+        })
+        .catch(error => {
+            alert(error.message);
+        });
+
+        modal.style.display = "none";
+    };
+</script>
+
+</body>
 </html>

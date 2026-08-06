@@ -8,4 +8,10 @@ class SUserBase(BaseModel):
 
 class SUserAdd(SUserBase):
     full_name: str
-    typeid: int
+    type_id: int
+
+
+class SupplierUpdate(BaseModel):
+    business_name: str
+    contact_person: str
+    phone: str
