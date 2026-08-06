@@ -43,10 +43,6 @@
 # 📸 Интерфейс
 <img width="2518" height="1177" alt="image" src="https://github.com/user-attachments/assets/e1e5cb50-701f-4e3a-bf6c-a8fa56c7f59d" />
 <img width="2514" height="1171" alt="image" src="https://github.com/user-attachments/assets/692b968c-7c95-47ba-941b-a0bb6198602e" />
-![Uploading image.png…]()
-
-<img width="2515" height="1217" alt="image" src="https://github.com/user-attachments/assets/e14f540f-f74d-450e-8c15-2f26c2ff764b" />
-<img width="2521" height="1217" alt="image" src="https://github.com/user-attachments/assets/d3f199d8-741b-49ff-8f52-38d1a04c3e2c" />
 <img width="2515" height="1214" alt="image" src="https://github.com/user-attachments/assets/018e85e2-9745-427d-a78f-c53bc4b1c198" />
 <img width="2516" height="1221" alt="image" src="https://github.com/user-attachments/assets/eb793268-ff86-413f-9484-fe7f6b9aee48" />
 
